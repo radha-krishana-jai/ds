@@ -1,0 +1,75 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Node {
+    int bookID;
+    char title[30];
+    struct Node *prev, *next;
+};
+
+struct Node* insert(struct Node* head, int id, char* title) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->bookID = id;
+    strcpy(temp->title, title);
+    temp->prev = NULL;
+    temp->next = head;
+    if (head) head->prev = temp;
+    return temp;
+}
+
+void display(struct Node* head) {
+    while (head) {
+        printf("%d - %s\n", head->bookID, head->title);
+        head = head->next;
+    }
+}
+
+int main() {
+    struct Node* head = NULL;
+    head = insert(head, 1, "Book A");
+    head = insert(head, 2, "Book B");
+    display(head);
+    return 0;
+}
+
+// Program 4: Circular Linked List
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Node {
+    char data[20];
+    struct Node* next;
+};
+
+struct Node* insert(struct Node* last, char* data) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(temp->data, data);
+    if (!last) {
+        temp->next = temp;
+        return temp;
+    }
+    temp->next = last->next;
+    last->next = temp;
+    return temp;
+}
+
+void display(struct Node* last) {
+    if (!last) return;
+    struct Node* temp = last->next;
+    do {
+        printf("%s -> ", temp->data);
+        temp = temp->next;
+    } while (temp != last->next);
+    printf("\n");
+}
+
+int main() {
+    struct Node* last = NULL;
+    last = insert(last, "One");
+    last = insert(last, "Two");
+    display(last);
+    return 0;
+}
