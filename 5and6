@@ -1,0 +1,63 @@
+// Program 5: Stack using Array
+#include <stdio.h>
+
+#define MAX 5
+int stack[MAX], top = -1;
+
+void push(int val) {
+    if (top == MAX - 1) printf("Stack Overflow\n");
+    else stack[++top] = val;
+}
+
+void pop() {
+    if (top == -1) printf("Stack Underflow\n");
+    else printf("Popped: %d\n", stack[top--]);
+}
+
+void display() {
+    for (int i = 0; i <= top; i++) printf("%d ", stack[i]);
+    printf("\n");
+}
+
+int main() {
+    push(10); push(20); display();
+    pop(); display();
+    return 0;
+}
+
+// Program 6: Infix to Postfix
+#include <stdio.h>
+#include <ctype.h>
+
+#define MAX 20
+char stack[MAX]; int top = -1;
+
+void push(char x) { stack[++top] = x; }
+char pop() { return stack[top--]; }
+
+int precedence(char x) {
+    if (x == '+' || x == '-') return 1;
+    if (x == '*' || x == '/') return 2;
+    return 0;
+}
+
+void infixToPostfix(char* infix) {
+    char postfix[MAX]; int j = 0;
+    for (int i = 0; infix[i]; i++) {
+        if (isalnum(infix[i])) postfix[j++] = infix[i];
+        else {
+            while (top != -1 && precedence(stack[top]) >= precedence(infix[i])) 
+                postfix[j++] = pop();
+            push(infix[i]);
+        }
+    }
+    while (top != -1) postfix[j++] = pop();
+    postfix[j] = '\0';
+    printf("Postfix: %s\n", postfix);
+}
+
+int main() {
+    char infix[] = "a+b*c";
+    infixToPostfix(infix);
+    return 0;
+}
