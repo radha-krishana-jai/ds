@@ -1,0 +1,39 @@
+// Program 7: Recursive Operations
+#include <stdio.h>
+
+void hanoi(int n, char from, char to, char aux) {
+    if (n == 1) { printf("Move disk from %c to %c\n", from, to); return; }
+    hanoi(n - 1, from, aux, to);
+    printf("Move disk from %c to %c\n", from, to);
+    hanoi(n - 1, aux, to, from);
+}
+
+int main() {
+    hanoi(3, 'A', 'C', 'B');
+    return 0;
+}
+
+// Program 8: Queue using Linked List
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node { char data[20]; struct Node* next; };
+struct Node *front = NULL, *rear = NULL;
+
+void enqueue(char* data) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(temp->data, data);
+    temp->next = NULL;
+    if (!rear) front = rear = temp;
+    else { rear->next = temp; rear = temp; }
+}
+
+void dequeue() {
+    if (!front) printf("Queue Empty\n");
+    else { printf("Dequeued: %s\n", front->data); front = front->next; }
+}
+
+int main() {
+    enqueue("One"); enqueue("Two"); dequeue();
+    return 0;
+}
