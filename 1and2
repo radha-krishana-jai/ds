@@ -1,0 +1,84 @@
+
+#include <stdio.h>
+
+struct Distance {
+    int kms;
+    int meters;
+};
+
+struct Distance add(struct Distance d1, struct Distance d2) {
+    struct Distance result;
+    result.meters = d1.meters + d2.meters;
+    result.kms = d1.kms + d2.kms + (result.meters / 1000);
+    result.meters %= 1000;
+    return result;
+}
+
+struct Distance subtract(struct Distance d1, struct Distance d2) {
+    struct Distance result;
+    if (d1.meters < d2.meters) {
+        d1.meters += 1000;
+        d1.kms--;
+    }
+    result.meters = d1.meters - d2.meters;
+    result.kms = d1.kms - d2.kms;
+    return result;
+}
+
+int main() {
+    struct Distance d1 = {5, 300}, d2 = {3, 400};
+    struct Distance sum = add(d1, d2);
+    struct Distance diff = subtract(d1, d2);
+    printf("Sum: %d km %d m\n", sum.kms, sum.meters);
+    printf("Difference: %d km %d m\n", diff.kms, diff.meters);
+    return 0;
+}
+
+
+
+// Program 2: Singly Linked List Operations
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* insert(struct Node* head, int data) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = data;
+    temp->next = head;
+    return temp;
+}
+
+struct Node* delete(struct Node* head, int key) {
+    struct Node *temp = head, *prev = NULL;
+    while (temp && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (!temp) return head;
+    if (prev) prev->next = temp->next;
+    else head = temp->next;
+    free(temp);
+    return head;
+}
+
+void display(struct Node* head) {
+    while (head) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    head = insert(head, 10);
+    head = insert(head, 20);
+    display(head);
+    head = delete(head, 10);
+    display(head);
+    return 0;
+}
